@@ -48,6 +48,10 @@ public readonly struct Wav(byte[] data, int formatType, int channelsCount, int s
                 data = reader.ReadBytes((int)chunkSize);
             }
 
+            // Align by 2
+            if (chunkSize % 2 != 0)
+                chunkSize++;
+
             reader.BaseStream.Position = chunkPos + chunkSize;
         }
 
@@ -78,5 +82,9 @@ public readonly struct Wav(byte[] data, int formatType, int channelsCount, int s
         writer.WriteString("data", 4, Encoding.ASCII);
         writer.Write((uint)Data.Length); // Chunk size
         writer.Write(Data);
+
+        // Padding to align by 2
+        if (Data.Length % 2 != 0)
+            writer.Write((byte)0);
     }
 }
