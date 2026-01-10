@@ -43,7 +43,9 @@ using MemoryStream exeStream = new(exeBuffer);
 using Reader exeReader = new(exeStream);
 
 // Verify it's not compressed
-exeReader.BaseStream.Position = 0x2730;
+exeReader.BaseStream.Position = 0x3C;
+ushort exeOffset = exeReader.ReadUInt16();
+exeReader.BaseStream.Position = exeOffset;
 string type = exeReader.ReadNullDelimitedString(System.Text.Encoding.ASCII);
 if (type != "LE")
 {
