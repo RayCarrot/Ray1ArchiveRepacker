@@ -19,13 +19,13 @@
         long archiveFileSize = new FileInfo(archiveFilePath).Length;
 
         exeReader.BaseStream.Position = 0;
-        while (exeReader.BaseStream.Position < exeReader.BaseStream.Length - 4)
+        while (exeReader.BaseStream.Position < exeReader.BaseStream.Length - 12)
         {
             long streamPos = exeReader.BaseStream.Position;
 
             List<FileEntry> fileEntries = new();
             long fileOffset = 0;
-            while (true)
+            while (exeReader.BaseStream.Position < exeReader.BaseStream.Length - 12)
             {
                 FileEntry fileEntry = FileEntry.Read(exeReader);
                 if (fileEntry.FileOffset == fileOffset && fileEntry.FileSize > 0 && fileEntry.Padding == 0)
@@ -48,7 +48,7 @@
             exeReader.BaseStream.Position = streamPos + 4;
         }
 
-        Console.WriteLine($"Failed to find header table for {archiveFilePath}");
+        ConsoleHelpers.WriteError($"ERROR: Failed to find header table for {archiveFilePath}");
 
         return null;
     }
