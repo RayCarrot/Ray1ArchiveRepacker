@@ -22,7 +22,7 @@ To run it, open a Command Prompt window in the same folder as the exe (by typing
 - `Ray1ArchiveRepacker -e <game-path> <output-path>`: Extracts all the archives to the output path
 - `Ray1ArchiveRepacker -r <game-path> <input-path>`: Repacks all the archives from the input path
 
-For example, use `Ray1ArchiveRepacker -r "C:\GOG Games\Rayman Forever\Rayman" "Archives"` to extract the archives from the GOG installation into a folder named "Archives".
+For example, use `Ray1ArchiveRepacker -e "C:\GOG Games\Rayman Forever\Rayman" "Archives"` to extract the archives from the GOG installation into a folder named "Archives".
 
 Make sure to keep a backup of the files before repacking them!
 
