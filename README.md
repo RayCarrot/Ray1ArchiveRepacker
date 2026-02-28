@@ -24,6 +24,8 @@ To run it, open a Command Prompt window in the same folder as the exe (by typing
 
 For example, use `Ray1ArchiveRepacker -e "C:\GOG Games\Rayman Forever\Rayman" "Archives"` to extract the archives from the GOG installation into a folder named "Archives".
 
+Optionally you can specify `-d` at the end to disable the exe verification. This allows it to be used on the .boot files in the Rayman 30th Anniversary Edition.
+
 Make sure to keep a backup of the files before repacking them!
 
 ### Editing
