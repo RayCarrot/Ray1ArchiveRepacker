@@ -14,11 +14,13 @@ void ShowHelpScreen()
                       "\n" +
                       "Usage:\n" +
                       "  -e <game-path> <output-path> | Extracts all the archives to the output path\n" +
-                      "  -r <game-path> <input-path>  | Repacks all the archives from the input path");
+                      "  -r <game-path> <input-path>  | Repacks all the archives from the input path\n" +
+                      "Optional parameters (to be specified last):\n" +
+                      "  -d | Disables verifying the exe file");
 }
 
 // Parse args
-if (args.Length != 3)
+if (args.Length < 3)
 {
     ShowHelpScreen();
     return;
@@ -27,6 +29,8 @@ if (args.Length != 3)
 string mode = args[0];
 string gameDir = args[1];
 string unpackedDir = args[2];
+
+bool disableExeVerification = args.Contains("-d");
 
 if (mode is not ("-e" or "-r") || !Directory.Exists(gameDir))
 {
@@ -43,14 +47,17 @@ using MemoryStream exeStream = new(exeBuffer);
 using Reader exeReader = new(exeStream);
 
 // Verify it's not compressed
-exeReader.BaseStream.Position = 0x3C;
-ushort exeOffset = exeReader.ReadUInt16();
-exeReader.BaseStream.Position = exeOffset;
-string type = exeReader.ReadNullDelimitedString(System.Text.Encoding.ASCII);
-if (type != "LE")
+if (!disableExeVerification)
 {
-    ConsoleHelpers.WriteError("The EXE file is compressed! Please decompress it before running this tool.");
-    return;
+    exeReader.BaseStream.Position = 0x3C;
+    ushort exeOffset = exeReader.ReadUInt16();
+    exeReader.BaseStream.Position = exeOffset;
+    string type = exeReader.ReadNullDelimitedString(System.Text.Encoding.ASCII);
+    if (type != "LE")
+    {
+        ConsoleHelpers.WriteError("The EXE file is compressed! Please decompress it before running this tool.");
+        return;
+    }
 }
 
 // Extract
